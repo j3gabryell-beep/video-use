@@ -33,7 +33,8 @@ import requests
 SCRIBE_URL = "https://api.elevenlabs.io/v1/speech-to-text"
 
 
-def load_api_key() -> str:
+def find_api_key() -> str | None:
+    """ElevenLabs key from .env (repo root, then cwd) or the environment, else None."""
     for candidate in [Path(__file__).resolve().parent.parent / ".env", Path(".env")]:
         if candidate.exists():
             for line in candidate.read_text().splitlines():
@@ -42,11 +43,23 @@ def load_api_key() -> str:
                     continue
                 k, v = line.split("=", 1)
                 if k.strip() == "ELEVENLABS_API_KEY":
-                    return v.strip().strip('"').strip("'")
-    v = os.environ.get("ELEVENLABS_API_KEY", "")
+                    return v.strip().strip('"').strip("'") or None
+    return os.environ.get("ELEVENLABS_API_KEY") or None
+
+
+def load_api_key() -> str:
+    v = find_api_key()
     if not v:
-        sys.exit("ELEVENLABS_API_KEY not found in .env or environment")
+        sys.exit("ELEVENLABS_API_KEY not found in .env or environment "
+                 "(or use --engine local for offline transcription)")
     return v
+
+
+def resolve_engine(engine: str) -> str:
+    """auto = Scribe when a key exists, else the offline Parakeet model."""
+    if engine != "auto":
+        return engine
+    return "scribe" if find_api_key() else "local"
 
 
 def count_audio_tracks(video_path: Path) -> int:
@@ -211,6 +224,13 @@ def main() -> None:
         help="Optional number of speakers when known. Improves diarization accuracy.",
     )
     ap.add_argument(
+        "--engine",
+        choices=["auto", "scribe", "local"],
+        default="auto",
+        help="scribe = ElevenLabs (best: fillers, diarization, audio events); local = offline "
+             "Parakeet v3 via transcribe_local.py. auto (default) = scribe if a key is set.",
+    )
+    ap.add_argument(
         "--audio-track",
         type=int,
         default=0,
@@ -225,6 +245,12 @@ def main() -> None:
         sys.exit(f"video not found: {video}")
 
     edit_dir = (args.edit_dir or (video.parent / "edit")).resolve()
+    if resolve_engine(args.engine) == "local":
+        from transcribe_local import transcribe_local_one
+
+        print("engine: local (Parakeet v3, offline)")
+        transcribe_local_one(video, edit_dir, args.language, audio_track=args.audio_track)
+        return
     api_key = load_api_key()
 
     transcribe_one(

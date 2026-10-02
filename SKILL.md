@@ -71,7 +71,11 @@ Helpers (`helpers/transcribe.py`, `helpers/render.py`, etc.) live alongside this
 
 ## Helpers
 
-- **`transcribe.py <video>`** — single-file Scribe call. `--num-speakers N` optional. Cached.
+- **`transcribe.py <video>`** — single-file Scribe call. `--num-speakers N` optional. Cached. `--engine local` (or `auto` with no key) runs `transcribe_local.py` instead.
+- **`transcribe_local.py <video>`** — offline Parakeet v3 (sherpa-onnx, 25 languages incl. Portuguese), same JSON shape as Scribe. No diarization; fillers often dropped from the text (their audio becomes a gap). Use when Scribe is unavailable.
+- **`auto_cut.py --edit-dir <dir> <video>...`** — draft `edl.json` that removes silences, vocal fillers, retakes (last take kept) and repeated-phrase stutters, plus `auto_cut_report.md` with suspects to review. A first draft — review it, then edit.
+- **`auto_edit.py <video|url> --workdir <dir>`** — one command for transcribe → pack → auto_cut → render cut → HyperFrames prep. See `PIPELINE.md`.
+- **`hyperframes_stage.py prepare|render|finish`** — hands the cut to HyperFrames' `talking-head-recut` workflow with the transcript remapped onto the cut timeline, renders it, then burns subtitles last.
 - **`transcribe_batch.py <videos_dir>`** — 4-worker parallel transcription. Use for multi-take.
 - **`pack_transcripts.py --edit-dir <dir>`** — `transcripts/*.json` → `takes_packed.md` (phrase-level, break on silence ≥ 0.5s).
 - **`timeline_view.py <video> <start> <end>`** — filmstrip + waveform PNG. On-demand visual drill-down. **Not a scan tool** — use it at decision points, not constantly.

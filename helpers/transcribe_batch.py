@@ -20,7 +20,7 @@ import time
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 
-from transcribe import load_api_key, transcribe_one, transcript_path
+from transcribe import load_api_key, resolve_engine, transcribe_one, transcript_path
 
 
 VIDEO_EXTS = {".mp4", ".MP4", ".mov", ".MOV", ".mkv", ".MKV", ".avi", ".AVI", ".m4v"}
@@ -57,6 +57,12 @@ def main() -> None:
         help="Optional number of speakers. Improves diarization when known.",
     )
     ap.add_argument(
+        "--engine",
+        choices=["auto", "scribe", "local"],
+        default="auto",
+        help="auto (default) = Scribe if ELEVENLABS_API_KEY is set, else offline Parakeet.",
+    )
+    ap.add_argument(
         "--audio-track",
         type=int,
         default=0,
@@ -82,6 +88,15 @@ def main() -> None:
     print(f"found {len(videos)} videos ({len(already_cached)} cached, {len(pending)} to transcribe)")
     if not pending:
         print("nothing to do")
+        return
+
+    if resolve_engine(args.engine) == "local":
+        # The local model already uses every core; run files one at a time.
+        from transcribe_local import transcribe_local_one
+
+        print(f"transcribing {len(pending)} files offline (Parakeet v3)")
+        for v in pending:
+            transcribe_local_one(v, edit_dir, args.language, audio_track=args.audio_track)
         return
 
     api_key = load_api_key()
