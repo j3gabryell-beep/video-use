@@ -1,0 +1,23 @@
+Riser sound effect short.wav
+Created/distributed by syntheffects (Freesound user)
+https://freesound.org/people/syntheffects/sounds/685256/
+
+	------------------------------
+
+License: (Creative Commons Zero, CC0)
+http://creativecommons.org/publicdomain/zero/1.0/
+
+	------------------------------
+
+Verified on 2026-09-13 from the sound's own page: the only Creative Commons link
+on it is the CC0 public-domain dedication above. No other licence appears.
+
+Source file: the publicly served high-quality preview
+  https://cdn.freesound.org/previews/685/685256_12265588-hq.mp3
+Freesound gates the original master behind an account; the preview is what its
+public embed player streams. CC0 places no restriction on using or
+redistributing it. This is therefore a transcode, not the master - see
+ATTRIBUTION.md.
+
+Edit: trimmed to the 1.53 s that build into the sound's peak (source 1.25-2.78 s),
+with an 80 ms fade-in to avoid a click at the cut, then mono 44.1 kHz MP3.

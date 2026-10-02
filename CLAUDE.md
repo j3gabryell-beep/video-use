@@ -40,14 +40,16 @@ This checkout runs the **cut → animate** pipeline in `PIPELINE.md`: video-use 
 These override the defaults above for every video unless the user says otherwise in the request.
 
 - **Niche:** viral content about games (GTA) and superhero films (Marvel / Avengers, DC). Language: Portuguese (pt-BR).
-- **Platform:** TikTok only, for now. The goal is monetization through Creator Rewards, which pays only on videos **over 60 s**.
-  - Target **61–90 s** per output video. Never deliver under 61 s.
+- **Platform:** TikTok only, for now. The channel is **not monetized yet** (Creator Rewards needs 10k followers + 100k views/30 days). Phase 1 goal is **growth: virality first**.
+  - Phase 1 (now): pick the length that maximizes completion rate and rewatches. A short source becomes a short clip; never pad. Typical: 15–45 s.
+  - Phase 2 (once the user says the channel is eligible): Creator Rewards pays only on videos **over 60 s** → target 61–90 s.
   - The user knows that clips of copyrighted films/games with the original audio risk the "original content" rule and copyright claims, and accepted that risk. Don't re-raise it each time.
 - **Audio:** the video's own original audio (film/game dialogue, music, SFX). No voiceover.
+  - If the source arrives silent (e.g. a screen recording with the player muted), build the bed from SFX and tell the user to add a trending sound in the TikTok app.
   - Cut on story beats, strong lines and audio/visual peaks, not on speech pauses.
   - Use the transcript for dialogue moments, and `timeline_view.py` plus the waveform for action peaks.
   - Drop dead stretches.
-- **Input → many outputs:** one long source (e.g. 10 min) should become **several standalone viral clips**, each 61–90 s with its own hook. Pick the moments that make sense on their own.
+- **Input → many outputs:** one long source (e.g. 10 min) should become **several standalone viral clips**, each with its own hook (length per the current phase above). Pick the moments that make sense on their own.
   - The user sends the source here in the chat.
 - **Format:** 9:16, 1080×1920. The user will say when another aspect is needed.
 - **Autonomy:** do everything without asking for approval. This overrides step 4 above and Hard Rule 11 for this user. Report what was made afterwards.
@@ -61,5 +63,5 @@ These override the defaults above for every video unless the user says otherwise
   - A half-second flash of the payoff before the hook.
   - A verbal or text hook together with a visual pattern interrupt in the first 2 s.
   - A chapter card or beat change every 5–8 s.
-  - Sound design built to the cut: a whoosh on transitions, a riser into reveals, a silence beat before the climax. Synthesize SFX locally with ffmpeg, since stock sites are unreachable.
+  - Sound design built to the cut: a whoosh on transitions, a riser into reveals, a silence beat before the climax. Use the CC0 SFX library (`assets/sfx/`, see its `ATTRIBUTION.md`); synthesize with ffmpeg only what it lacks. Stock sites (Pixabay, Freesound, Mixkit) are unreachable from the cloud container; GitHub is.
   - Keep the count of designed sounds low and tied to visible events.

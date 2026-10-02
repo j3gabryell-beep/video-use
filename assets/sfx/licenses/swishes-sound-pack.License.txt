@@ -1,0 +1,20 @@
+Swishes Sound Pack
+Created/distributed by artisticdude
+https://opengameart.org/content/swishes-sound-pack
+
+	------------------------------
+
+License: (Creative Commons Zero, CC0)
+http://creativecommons.org/publicdomain/zero/1.0/
+
+	------------------------------
+
+The download (swishes.zip) ships no licence file. The dedication above is the
+single entry in the submission's "License(s)" field on the page named above,
+read on 2026-09-13:
+
+  <div class='license-icon'>
+    <a href='http://creativecommons.org/publicdomain/zero/1.0/'>
+      <div class='license-name'>CC0</div>
+
+Files used: swish-7.wav, swish-9.wav, swish-13.wav
